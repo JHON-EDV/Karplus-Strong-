@@ -7,32 +7,29 @@ fs=44100;
 %220hz equivale a un LA
 % POO
 FO=110;
-function nota = nota
-Fo=FO*(2^(n/12));
+nota(fs,FO)
+function nota = nota(fs,FO)
 %D Duracion
 D= 0.5;
-%Calcular el periodo de la señal 
-T =floor(fs/FO);
-%Tañir la cuerda
-x=3*rand(T,1)-1; %corresponde a un nivel dc de cero
-%Numero de muestras 
-N=D*fs;
-%Crear el sonido 
+for n=0:11
+    Fo=FO*(2^(n/12));   
+    %Calcular el periodo de la señal 
+    T =floor(fs/Fo);
+    %Tañir la cuerda
+    x=3*rand(T,1)-1; %corresponde a un nivel dc de cero
+    %Numero de muestras 
+    N=D*fs;
+    %Crear el sonido 
+    Y=zeros(N,1); %muestras en cero
+    Y(1:T)=x;% la primer muestra igual a la entrada
+    
+    pause on
+    pause(1)
+    tono(Y,N,T,0,fs)
+end
+end
 
-Y=zeros(N,1); %muestras en cero
-Y(1:T)=x;% la primer muestra igual a la entrada
-
-
-%nota(Y,N,T,Delay,fs)
-tono(Y,N,T,0,fs)
-
-%for i=1:10
-%    pause on
-%    pause(1)
-%    tono(Y,N,T,10+(i*10),fs)
-%end
-
-function tono = tono(Y,N,T,Delay,fs)
+function tono = tono(Y,N,T,Delay,fs) %#ok<STOUT>
 for i=1:N-T
     %filtro
     Y(i+T+Delay)=(Y(i)+Y(i+1))/2;
