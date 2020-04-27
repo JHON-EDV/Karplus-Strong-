@@ -20,12 +20,18 @@ Y=zeros(N,1); %muestras en cero
 Y(1:T)=x;% la primer muestra igual a la entrada
 
 
+%nota(Y,N,T,Delay,fs)
+nota(Y,N,T,200,fs)
+nota(Y,N,T,10,fs)
+
+function nota= nota(Y,N,T,Delay,fs)
 for i=1:N-T
     %filtro
-    Y(i+T)=(Y(i)+Y(i+1))/2;
+    Y(i+T+Delay)=(Y(i)+Y(i+1))/2;
 end
-
 sound(Y,fs);
 plot(Y)
+end
 
+%plot(Y)
 
