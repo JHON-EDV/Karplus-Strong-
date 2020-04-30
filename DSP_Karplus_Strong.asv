@@ -30,10 +30,11 @@ Equivalente_n = [-12 -11 -10 -9 -8 -7 -6 -5 -4 -3 ...
 Pentagrama = containers.Map(Notas_n,Equivalente_n);
 
 
-%notas = {'DO','RE','MI','FA','SOL','1LA','1SI','1DO'};
+%notas = {'LA','DO','MI','SOL','SI'};%,'SOL','MI','FA','SOL','1LA','1SI','1DO'};
 
-% notas={'1LA','1DO','MI','SOL','SI', ...
-%    'SOL','MI','1DO','1LA'...
+ notas={'DO','DO','SOL','SOL',...
+        'LA','LA','SOL','FA',...
+        'FA','MI'};
 %    '1LA','1DO','MI','SOL','SI', ...
 %    'SOL','MI','1DO','1LA'...
 %    '1LA','1DO','MI','SOL','SI', ...
@@ -41,26 +42,29 @@ Pentagrama = containers.Map(Notas_n,Equivalente_n);
 %    '1LA','1DO','MI','SOL','SI', ...
 %    'SOL','MI','1DO','1LA'};
 
-fs=16000;
+%fs=16000;
 
 %Para la creacion de la cancion es necesario variar
-% 3 Datos -1 el arreglo de 'notas
+% 3 Datos -1 el arreglo de 'notas'
 %         -2 el string fs (que define la duracion)
 %         -3 el string Tono_nota (que define el timbre) 
 
-%fs=[16000, 16000,16000, 16000,16000, 16000,16000, 16000];
-tono_nota=[0,0,0,0,0,0,0,0];
+fs=[24000, 24000, 24000, 24000,...
+    24000, 24000,24000, 24000,...
+    24000, 48000 ];
 
-Delay = 0.1;
+tono_nota=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+Delay = 0.625;
 pause on
 
 %D Duracion de la nota
-D= 1;
+D= 0.625;
 
 for i=1:length(notas)
     pause(Delay);
     nota_entero=cell2mat((values(Pentagrama,notas(i))));
-    nota(D,fs,FO,nota_entero,tono_nota)
+    nota(D,fs(i),FO,nota_entero,tono_nota(i))
 end
 
 end
@@ -72,7 +76,7 @@ Fo=FO*(2^(n/12));
 %Calcular el periodo de la señal 
 T =floor(fs/Fo);
 %Tañir la cuerda
-x=(pi)*rand(T,1)-1; %corresponde a un nivel dc de cero
+x=(pi/2)*rand(T,1)-1; %corresponde a un nivel dc de cero
 %Numero de muestras 
 N=D*fs;
 %Crear el sonido 
