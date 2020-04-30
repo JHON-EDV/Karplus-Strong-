@@ -1,9 +1,11 @@
 %Primer entregable DSP
 %Algoritmo karplus/strong
+
 clc;clear; close all;
+
 %fs frecuencia de muestreo
-%fs=181600;
-%FO frecuencia de la nota
+
+%FO frecuencia (Centra)
 %110hz equivale a un LA
 FO=110; %clave de LA 
 
@@ -48,7 +50,9 @@ tono_nota=[0, 0, 0, 0,...
            0, 0, 0, 0,...
            0, 0, 0, 0];
 
+%Delay Tiempo de espera entre cada nota
 Delay = 0.515;
+%Pausa
 pause on
 
 %D Duracion de la nota
@@ -56,16 +60,22 @@ D= 0.625;
 
 for i=1:length(notas)
     pause(Delay);
+    %cell2mat utilizado para obtener el valor de notas
+    %De esa forma se da la nota y no su equivalente (numero)
     nota_entero=cell2mat((values(Pentagrama,notas(i))));
+    
+    %llamado a la funcion nota
     nota(D,fs(i),FO,nota_entero,tono_nota(i))
 end
 
 end
 
 
-function nota(D,fs,FO,n,tono_nota)
+function nota(D,fs,FO,nota_entero,tono_nota)
 
-Fo=FO*(2^(n/12));
+%Se crea la nota dependiendo de el parametro nota_entero
+Fo=FO*(2^(nota_entero/12));
+
 %Calcular el periodo de la señal 
 T =floor(fs/Fo);
 %Tañir la cuerda
@@ -76,21 +86,26 @@ N=D*fs;
 Y=zeros(N,1); %muestras en cero
 Y(1:T)=x;% la primer muestra igual a la entrada
 
-tono(Y,N,T,tono_nota,fs)
 
+tono(Y,N,T,tono_nota,fs)
 end
 
 
-function tono(Y,N,T,Delay,fs) 
+function tono(Y,N,T,tono_nota,fs) 
 for i=1:N-T
+    
     %filtro
-    Y(i+T+Delay)=(Y(i)+Y(i+1))/2;
+    Y(i+T+tono_nota)=(Y(i)+Y(i+1))/2;
     
 end
+%Creacion del sonido.
 sound(Y,fs);
+
+%Otro metodo de creacion del sonido 
+%soundsc(Y,fs);
+
 t=(0:length(Y)-1)*0.00001;
 plot(t,Y)
-
 
 %plot(Y)
 %x=length(Y)

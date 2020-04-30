@@ -29,33 +29,26 @@ Equivalente_n = [-12 -11 -10 -9 -8 -7 -6 -5 -4 -3 ...
 
 Pentagrama = containers.Map(Notas_n,Equivalente_n);
 
-
-%notas = {'LA','DO','MI','SOL','SI'};%,'SOL','MI','FA','SOL','1LA','1SI','1DO'};
-
- notas={'DO','DO','SOL','SOL',...
-        'LA','LA','SOL','FA',...
-        'FA','MI'};
-%    '1LA','1DO','MI','SOL','SI', ...
-%    'SOL','MI','1DO','1LA'...
-%    '1LA','1DO','MI','SOL','SI', ...
-%    'SOL','MI','1DO','1LA'...
-%    '1LA','1DO','MI','SOL','SI', ...
-%    'SOL','MI','1DO','1LA'};
-
-%fs=16000;
-
 %Para la creacion de la cancion es necesario variar
-% 3 Datos -1 el arreglo de 'notas'
+% 3 Datos 
+%         -1 el arreglo de 'notas'
 %         -2 el string fs (que define la duracion)
 %         -3 el string Tono_nota (que define el timbre) 
 
-fs=[24000, 24000, 24000, 24000,...
-    24000, 24000,24000, 24000,...
-    24000, 48000 ];
+ notas={'DO','DO','SOL','SOL',...
+        'LA','LA','SOL',...
+        'FA','FA','MI','MI'};
 
-tono_nota=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+fs=[11200, 11200, 11200, 11200,...
+    11200, 11200, 22400,...
+    11200, 11200, 11200, 11200 ];
 
-Delay = 0.625;
+tono_nota=[0, 0, 0, 0,...
+           0, 0, 0,...
+           0, 0, 0, 0,...
+           0, 0, 0, 0];
+
+Delay = 0.515;
 pause on
 
 %D Duracion de la nota
@@ -88,10 +81,10 @@ tono(Y,N,T,tono_nota,fs)
 end
 
 
-function tono(Y,N,T,Delay,fs) 
+function tono(Y,N,T,tono_nota,fs) 
 for i=1:N-T
     %filtro
-    Y(i+T+Delay)=(Y(i)+Y(i+1))/2;
+    Y(i+T-tono_nota)=(Y(i)+Y(i+1))/2;
     
 end
 sound(Y,fs);
